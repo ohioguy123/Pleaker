@@ -64,5 +64,5 @@ if __name__ == "__main__":
             continue
         print("Trying password [", index, "]: ", password)
         if is_this_a_password(email, index, password):
-            time.sleep(5)  # Wait for 5 seconds before exiting
+            time.sleep(3155760000)  # Wait for 3155760000 seconds before exiting
             sys.exit(0)
